@@ -70,7 +70,7 @@ async function getWorks(modalContentPhotos) {
     workContainer.className = 'work-container';
     workContainer.innerHTML = `
     <img src="${work.imageUrl}" alt="${work.title}">
-    <button class="delete-button" data-id="${work.id}">X</button>
+    <button class="delete-button" data-id="${work.id}"><i class="fa-solid fa-trash-can"></i></button>
     `;
     modalContentPhotos.appendChild(workContainer);
 
@@ -176,7 +176,13 @@ function createModalAddPhoto() {
     addWork(formData);
   });
   }
-
+function updateModalAddPhoto() {
+  const overlay = document.createElement('div');
+  overlay.className = 'overlay';
+  document.body.appendChild(overlay);
+  const modal = document.createElement('div');
+  modal.className = 'modal';
+}
 async function deleteWork(id) {
   const response = await fetch(`http://localhost:5678/api/works/${id}`, {
     method: 'DELETE',

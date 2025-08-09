@@ -83,9 +83,9 @@ h1 > span {
 
 h2{
 	font-family: 'Syne';
-	font-weight: 700;
-	font-size: 30px;
-	color: #1D6154
+	font-weight: 400;
+	font-size: 26px;
+	color: #000000;
 }
 nav ul {
 	display: flex;
@@ -289,7 +289,7 @@ footer nav ul {
 	left: 50%;
 	transform: translate(-50%, -50%);
 	width: 50%;
-	height: 60%;
+	height: 70%;
 	margin: auto;
 	background-color: white;
 	border-radius: 10px;
@@ -298,6 +298,10 @@ footer nav ul {
 	align-items: center;
 	padding: 70px;
 	max-width: 500px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	overflow-y: auto;
 	
 }
 .close-modal {
@@ -318,6 +322,7 @@ footer nav ul {
 }
 .modal-content h2 {
 	margin-bottom: 40px;
+	color: #000000;
 }
 
 .modal-content-photos {
@@ -404,11 +409,15 @@ footer nav ul {
 	cursor: pointer;
 	width: 17px;
 	height: 17px;
-	border-radius: 5px;
+	border-radius: 2px;
 	padding: 5px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	color: white;
+}
+.delete-button i {
+	font-size: 10px;
 }
 
 .line{
@@ -417,7 +426,7 @@ footer nav ul {
 	margin: 30px 0;
 }
 .add-photo-button {
-	background-color: #1D6154;	
+	background-color: #1D6154;
 	color: white;
 	border: none;
 	cursor: pointer;
@@ -429,8 +438,8 @@ footer nav ul {
 	margin-top: 20px;
 }
 .add-button {
-	background-color:gray;
-	color:#1D6154;
+	background-color:#1D6154;
+	color: white;
 	border: none;
 	cursor: pointer;
 	padding: 10px 40px;
@@ -448,10 +457,10 @@ footer nav ul {
     align-items: center;
     justify-content: center; 
     gap: 30px;
-    margin-top: 50px;
     width: 100%;
     padding: 0 20px; 
     box-sizing: border-box; 
+	margin-top: 20px;
 }
 
 #add-photo-form form {
@@ -477,7 +486,7 @@ footer nav ul {
 	background-color: #E8F1F6;
 	padding: 20px 80px;
 	gap: 10px;
-	height: 170px;
+	height: 140px;
 }
 .image-upload p {
 	font-family: 'Work Sans';
