@@ -160,6 +160,8 @@ function createModalAddPhoto() {
         uploadIcon.style.display = "none";
         uploadBtn.style.display = "none";
         uploadText.style.display = "none";
+        document.querySelector('.image-upload').classList.add('previsualisation');
+
       };
       reader.readAsDataURL(this.files[0]);
     }
@@ -215,6 +217,7 @@ async function addWork(work) {
     alert("Erreur lors de l'ajout de la photo");
   }
 }
+
 // Initialisation au chargement
 document.addEventListener("DOMContentLoaded", function () {
   initAdmin();
