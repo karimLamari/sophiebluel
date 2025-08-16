@@ -29,7 +29,6 @@ async function getCategories() {
       throw new Error("Erreur lors de la récupération des catégories");
   }
   const data = await response.json();
-  console.log(data);
   allCategories = data;
   return data;
 }
@@ -70,22 +69,23 @@ async function displayCategories() {
       });
   });
 }
-// Fonction d'affichage des travaux
+// affichage des travaux dans la gallerie
 function displayWorks(works) {
   const gallery = document.querySelector('.gallery');
   if (!gallery) return;
 
-  gallery.innerHTML = '';
+  gallery.innerHTML = ''; 
+
   works.forEach(work => {
-    gallery.innerHTML += `
-      <figure>
-        <img src="${work.imageUrl}" alt="${work.title}">
-        <figcaption>${work.title}</figcaption>
-      </figure>
+    const figure = document.createElement('figure');
+    figure.dataset.id = work.id; 
+    figure.innerHTML = `
+      <img src="${work.imageUrl}" alt="${work.title}" crossorigin="anonymous">
+      <figcaption>${work.title}</figcaption>
     `;
+    gallery.appendChild(figure); 
   });
 }
-
 // Initialisation au chargement
 document.addEventListener('DOMContentLoaded', function() {
   if (document.querySelector('.gallery')) {

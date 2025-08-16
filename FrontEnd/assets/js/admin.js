@@ -24,7 +24,7 @@ function initAdmin() {
 function cleanAdminInterface() {
   document.querySelector(".modify-button")?.remove();
 }
-
+// Creation dynamique de la modale du bouton modifier 
 function createModal() {
   const overlay = document.createElement("div");
   overlay.className = "overlay";
@@ -61,7 +61,7 @@ function createModal() {
     createModalAddPhoto();
   });
 }
-
+// recuperation des travaux pour la modale
 async function getWorks(modalContentPhotos) {
   const gallery = await fetch("http://localhost:5678/api/works");
   const works = await gallery.json();
@@ -69,6 +69,7 @@ async function getWorks(modalContentPhotos) {
   works.forEach((work) => {
     workContainer = document.createElement("div");
     workContainer.className = "work-container";
+    workContainer.dataset.id = work.id;
     workContainer.innerHTML = `
     <img src="${work.imageUrl}" alt="${work.title}">
     <button class="delete-button" data-id="${work.id}"><i class="fa-solid fa-trash-can"></i></button>
@@ -79,15 +80,18 @@ async function getWorks(modalContentPhotos) {
       .querySelector(".delete-button")
       .addEventListener("click", () => {
         deleteWork(work.id);
+
       });
   });
 }
+//creation de la deuxieme modale d'ajout de photo 
 function createModalAddPhoto() {
   const overlay = document.createElement("div");
   overlay.className = "overlay";
   document.body.appendChild(overlay);
   const modal = document.createElement("div");
   modal.className = "modal";
+  // ajout de toute la structure de la modale
   modal.innerHTML = `
       <button class="prev-button"><i class="fa-solid fa-arrow-left"></i></button>
       <h2>Ajout photo</h2>
@@ -115,6 +119,7 @@ function createModalAddPhoto() {
       <button type="submit" class="submit-btn">Valider</button>
     </form>
   `;
+  // recuperation des categories pour les injectées dynamiquement 
   fetch("http://localhost:5678/api/categories")
     .then((response) => response.json())
     .then((categories) => {
@@ -174,18 +179,11 @@ function createModalAddPhoto() {
     formData.append("image", photoInput.files[0]);
     formData.append("title", modal.querySelector("#title").value);
     formData.append("category", modal.querySelector("#category").value);
-    console.log([...formData.entries()]); // Pour déboguer
 
     addWork(formData);
   });
 }
-function updateModalAddPhoto() {
-  const overlay = document.createElement("div");
-  overlay.className = "overlay";
-  document.body.appendChild(overlay);
-  const modal = document.createElement("div");
-  modal.className = "modal";
-}
+
 async function deleteWork(id) {
   const modalContentPhotos = document.querySelector(".modal-content-photos");
   const response = await fetch(`http://localhost:5678/api/works/${id}`, {
@@ -195,8 +193,9 @@ async function deleteWork(id) {
     },
   });
   if (response.ok) {
+    document.querySelector(`.work-container[data-id="${id}"]`)?.remove();
+    document.querySelector(`figure[data-id="${id}"]`)?.remove();
     alert("Photo supprimée avec succès");
-    getWorks(modalContentPhotos);
   } else {
     alert("Erreur lors de la suppression de la photo");
   }
@@ -211,8 +210,16 @@ async function addWork(work) {
     body: work,
   });
   if (response.ok) {
+    const newWork = await response.json();
+    const galleryFigure = document.createElement('figure')
+    galleryFigure.dataset.id = newWork.id;
+    galleryFigure.innerHTML = `
+      <img src="${newWork.imageUrl}" alt="${newWork.title}">
+      <figcaption>${newWork.title}</figcaption>`;
+    document.querySelector('.gallery').appendChild(galleryFigure);
+    document.querySelector('.prev-button').click();
     alert("Photo ajoutée avec succès");
-    window.location.href = "index.html";
+
   } else {
     alert("Erreur lors de l'ajout de la photo");
   }
