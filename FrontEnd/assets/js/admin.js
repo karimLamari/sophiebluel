@@ -58,17 +58,15 @@ function createModal() {
   });
 }
 // recuperation des travaux pour la modale
-async function getWorks(modalContentPhotos) {
-  const gallery = await fetch("http://localhost:5678/api/works");
-  const works = await gallery.json();
+function getWorks(modalContentPhotos) {
   modalContentPhotos.innerHTML = "";
-  works.forEach((work) => {
-    workContainer = document.createElement("div");
+  allWorks.forEach((work) => {
+    const workContainer = document.createElement("div");
     workContainer.className = "work-container";
     workContainer.dataset.id = work.id;
     workContainer.innerHTML = `
-    <img src="${work.imageUrl}" alt="${work.title}">
-    <button class="delete-button" data-id="${work.id}"><i class="fa-solid fa-trash-can"></i></button>
+      <img src="${work.imageUrl}" alt="${work.title}">
+      <button class="delete-button" data-id="${work.id}"><i class="fa-solid fa-trash-can"></i></button>
     `;
     modalContentPhotos.appendChild(workContainer);
 
@@ -76,7 +74,6 @@ async function getWorks(modalContentPhotos) {
       .querySelector(".delete-button")
       .addEventListener("click", () => {
         deleteWork(work.id);
-
       });
   });
 }
@@ -115,19 +112,16 @@ function createModalAddPhoto() {
     </form>
   `;
   // recuperation des categories pour les injectées dynamiquement 
-  fetch("http://localhost:5678/api/categories")
-    .then((response) => response.json())
-    .then((categories) => {
       const select = modal.querySelector("#category");
-      categories.forEach((category) => {
+      allCategories.forEach((category) => {
         const option = document.createElement("option");
         option.value = category.id;
         option.textContent = category.name;
         select.appendChild(option);
       });
-    });
-
   document.body.appendChild(modal);
+
+
   //bouton retour
   modal.querySelector(".prev-button").addEventListener("click", () => {
     modal.remove();
@@ -146,7 +140,10 @@ function createModalAddPhoto() {
     fileInput.click();
   });
   // Gestion de la prévisualisation de l'image
+  const titleInput = modal.querySelector("#title");
+  const categorySelect = modal.querySelector("#category");
   const photoInput = modal.querySelector("#photo-input");
+  const submitBtn = modal.querySelector(".submit-btn");
   const imagePreview = modal.querySelector("#image-preview");
   const uploadIcon = modal.querySelector(".fa-image");
   const uploadBtn = modal.querySelector(".upload-btn");
@@ -166,11 +163,33 @@ function createModalAddPhoto() {
       reader.readAsDataURL(this.files[0]);
     }
   });
-  modal.querySelector("#add-photo-form").addEventListener("submit", (e) => {
-    e.preventDefault();
+  
+  function checkFormulaire() {
+    if (
+      photoInput.files.length > 0 &&
+      titleInput.value.trim() !== "" &&
+      categorySelect.value !== ""
+    ) {
+      submitBtn.style.backgroundColor = "#1D6154"; 
+      return true;
+    } else {
+      submitBtn.style.backgroundColor = "#ccc";   
+      return false;
+    }
+  }
 
+  // Écouter les changements pour validation dynamique
+  titleInput.addEventListener("input", checkFormulaire);
+  categorySelect.addEventListener("change", checkFormulaire);
+  photoInput.addEventListener("change", checkFormulaire);
+  modal.querySelector("#add-photo-form").addEventListener("submit", (e) => {
+        e.preventDefault();
+
+    if (checkFormulaire() === false) {
+            alert("Veuillez remplir tous les champs du formulaire.");
+            return
+    }
     const formData = new FormData();
-    console.log(photoInput.files[0]);
     formData.append("image", photoInput.files[0]);
     formData.append("title", modal.querySelector("#title").value);
     formData.append("category", modal.querySelector("#category").value);
@@ -205,6 +224,7 @@ async function addWork(work) {
   });
   if (response.ok) {
     const newWork = await response.json();
+    allWorks.push(newWork); // Ajout dynamique de la nouvelle photo dans la galerie
     const galleryFigure = document.createElement('figure')
     galleryFigure.dataset.id = newWork.id;
     galleryFigure.innerHTML = `
@@ -218,7 +238,6 @@ async function addWork(work) {
     alert("Erreur lors de l'ajout de la photo");
   }
 }
-
 // Initialisation au chargement
 document.addEventListener("DOMContentLoaded", function () {
   initAdmin();
