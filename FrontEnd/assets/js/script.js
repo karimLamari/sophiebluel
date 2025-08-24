@@ -9,21 +9,8 @@ async function loadWorks() {
   allWorks = await response.json();
   displayWorks(allWorks);
 }
-async function loadCategories() {
-  const response = await fetch('http://localhost:5678/api/categories');
-  if (!response.ok) throw new Error('Erreur chargement categories');
-  allCategories = await response.json();
-  displayCategories(allCategories);
-}
 
-function displayCategories(categories) {
-  const select = document.querySelector('#category');
-  select.innerHTML = '';
-  categories.forEach(category => {
-    select.innerHTML += `<option value="${category.id}">${category.name}</option>`;
-  });
-}
-async function getCategories() {
+async function loadCategories() {
   const response = await fetch("http://localhost:5678/api/categories");
   if (!response.ok) {
       throw new Error("Erreur lors de la récupération des catégories");
@@ -35,7 +22,7 @@ async function getCategories() {
 
 //affichage des catégories dans le menu
 async function displayCategories() {
-  const categories = await getCategories();
+  const categories = await loadCategories();
   const categoriesContainer = document.querySelector(".categories");
   if (categoriesContainer) {
       categoriesContainer.innerHTML = "";
@@ -90,6 +77,6 @@ function displayWorks(works) {
 document.addEventListener('DOMContentLoaded', function() {
   if (document.querySelector('.gallery')) {
     loadWorks();
-    loadCategories();
+    displayCategories();
   }
 });
