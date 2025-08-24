@@ -293,7 +293,7 @@ footer nav ul {
 	left: 50%;
 	transform: translate(-50%, -50%);
 	width: 50%;
-	height: 70%;
+	height: auto;
 	margin: auto;
 	background-color: white;
 	border-radius: 10px;
@@ -549,4 +549,68 @@ footer nav ul {
 	font-family: 'Syne';
 	font-weight: 700;
 	font-size: 14px;
+}
+
+@media (max-width: 1200px) {
+	body{
+		padding: 0 20px;
+	}
+
+	.gallery {
+		grid-template-columns: 1fr 1fr;
+		gap: 10px;
+	}
+
+	header img {
+		margin-bottom: 20px;
+	}
+
+	#introduction {
+		flex-direction: column;
+		text-align: center;
+	}
+	#introduction figure, #introduction article {
+		flex: none;
+		width: 100%;
+	}
+	#contact {
+		width: 100%;
+	}
+	.modal {
+		width: 90%;
+		height: auto;
+		padding: 20px;
+		max-width: none;
+	}
+	.modal-content-photos {
+	grid-template-columns: 1fr 1fr 1fr; 
+	gap: 10px;
+}
+}
+@media (max-width:900px) {
+	header {
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+	}
+	nav ul {
+		display: flex;
+		gap: 30px	;
+	}
+	nav li {
+		padding: 10px 0;
+	}
+	#introduction img {
+		width: 50%;
+	}
+	#portfolio h2 {
+		font-size: 22px;
+	}
+	.categories {
+		flex-direction: column;
+		gap: 10px;
+	}
+	.categories button {
+		width: 100%;
+	}
 }

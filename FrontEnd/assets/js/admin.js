@@ -20,10 +20,6 @@ function initAdmin() {
   }
 }
 
-// Nettoyage de l'interface admin
-function cleanAdminInterface() {
-  document.querySelector(".modify-button")?.remove();
-}
 // Creation dynamique de la modale du bouton modifier 
 function createModal() {
   const overlay = document.createElement("div");
@@ -91,7 +87,6 @@ function createModalAddPhoto() {
   document.body.appendChild(overlay);
   const modal = document.createElement("div");
   modal.className = "modal";
-  // ajout de toute la structure de la modale
   modal.innerHTML = `
       <button class="prev-button"><i class="fa-solid fa-arrow-left"></i></button>
       <h2>Ajout photo</h2>
@@ -185,7 +180,6 @@ function createModalAddPhoto() {
 }
 
 async function deleteWork(id) {
-  const modalContentPhotos = document.querySelector(".modal-content-photos");
   const response = await fetch(`http://localhost:5678/api/works/${id}`, {
     method: "DELETE",
     headers: {
